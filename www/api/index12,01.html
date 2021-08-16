@@ -1,0 +1,604 @@
+<!DOCTYPE html><html><head>
+<meta charset="UTF-8">
+<title>api2</title>	
+<script src='divLib.js'></script>
+<script src='jquery-1.11.3.js'></script>
+
+<script>
+	var trace = window.console.log.bind(window.console);
+
+	var dcmParam,scane,wind,object,pObject,ta,ta1
+	var array=[];
+	var aButton=[]
+	var objectBase
+
+    const OBJECT_ID = 1;
+
+    // ID Обьекта в главной БД этих обьектов на сервере (К этому обьекту - подключаются остальные (файлы))
+	var id="1";
+
+    // ID Файла, к которому будет применено действие (Обновление / Удаление, ...)
+    var idFile="1";
+
+   /* const TEXTURES = "textures";
+    const OBJECTS3D = "objects3d";
+    const MATERIALS = "materials";
+    const PLANS = "plans";
+
+
+    const PLANS = "xzKey";
+
+    var arrayList=[
+            TEXTURES,
+            OBJECTS3D,
+            MATERIALS,
+            PLANS
+	];
+
+
+
+
+    var correctNames = {
+            TEXTURES : "textures_obj",
+            OBJECTS3D : "object3d_obj",
+            MATERIALS : "material_obj",
+            PLANS : "plan_obj"
+        };*/
+
+
+
+
+    
+
+    var arrayList=[ "textures", "objects3d", "materials", "plans"]
+
+	var nameList=arrayList[0];
+
+	var T="ASDFDSFDSF"
+
+	var arrayURL=[
+					'https://alphakp.ru/api',
+					'http://127.0.0.1:8000/api/v1',
+					'http://192.168.1.116:8000/api/v1',
+					'http://192.168.1.115:8000/api/v1',
+	];
+	var url=arrayURL[0];
+
+
+
+
+
+function creatArrApi(){
+        //создаюм обьекты отправки	
+        var  o={
+                name : "create",//имя кнопки
+                help : "создают обьект в базе данных, под него создаються папка с именем ид",
+                color : "#93c32f",
+                obj : {			
+                        url :  'пофиг перезапишеться при отправке',
+                        type :  'POST',//доп параметры на загрузку файла, беку видне что писать!!
+                        data : {
+                                file: [1, 2]
+                            } 
+                    }
+            }
+        array.push(o);
+
+        var  o={
+                name : "delete",
+                help : "убивает идишник, убивает директорию, чистит файлы в списках файлов",
+                color : "#93c32f",
+                id : true,
+                obj : {			
+                        url :  'пофиг перезапишеться при отправке',	
+                        type :  'DELETE'
+                }
+        }
+        array.push(o);
+
+        var  o={
+                name : "get",
+                help : "возврощает всю инфу про обьект",
+                color : "#93c32f",			
+                id : true,
+                obj : {			
+                        url :  'пофиг перезапишеться при отправке',
+                        type :  'GET'		       
+                }
+        }
+        array.push(o);
+
+
+        var  o={
+                name : "set",
+                help : "перезаписывает из data все пареметры обьекта",
+                color : "#93c32f",			
+                id : true,
+                obj : {			
+                        url :  'пофиг перезапишеться при отправке',
+                        type :  'PUT',
+                        data : {
+                                json : '{"test":10} Запишу string',
+                                // notParam : "Error не тпараметра, если хотябы один не сушествет, то не записываем никакой",
+                                // notValid : "Error не верный тип данных, если хотябы один не верного типа, то не записываем никакой"
+                        }
+                }
+        }
+        array.push(o);
+
+        var  o={
+                name : "setFile",
+                help : "Запишет фаил в директорию ид, запишет путь в список id обьекта, запишет в общий список файлов",
+                color : "#93c32f",			
+                // idFile : true,
+                // file: true,
+                param : "files",
+                obj : {			
+                        url : "пофиг перезапишеться при отправке",
+                        // type : 'PUT',
+                        type : 'POST',
+                        processData: false,
+                        contentType: false,
+                        data : formData,
+                    }
+            }
+        array.push(o);
+
+
+        var  o={
+                name : "deleteFile",
+                help : "Запишет фаил в директорию ид, запишет путь в список id обьекта, запишет в общий список файлов",
+                color : "#93c32f",			
+                idFile : true,
+                param : "files",
+                obj : {			
+                        url :  'пофиг перезапишеться при отправке',
+                        type :  'DELETE'
+                }
+        }
+        array.push(o);
+
+
+        var  o={
+                name : "getList",
+                help : "Получает список всех обьетов в неполной форме c тремя параметрвами{id(int),typeList(int),icon(string)}",
+                color : "#1a73e8",
+                // param : "getList",			
+                obj : {//то что посылаем через аякс на сервер, собственно тут сам запрос
+                        url :  'пофиг перезапишеться при отправке',
+                        type :  'GET',
+                        // data : {
+                        // json : true,
+                        // icon : true,
+                        // xz : true
+                        // }
+                }
+        }
+        array.push(o);
+
+
+
+        var  o={
+                name : "saveListJSON",
+                help : "Генерит фаил json, от getList после он доступен по: "+url+nameList+"/list.json",
+                color : "#1a73e8",
+                param : "export",			
+                obj : {//то что посылаем через аякс на сервер, собственно тут сам запрос
+                        url :  'пофиг перезапишеться при отправке',
+                        type :  'GET',
+                        // data : {
+                                // json : true,
+                                // icon : true,
+                                // xz : true
+                        // }
+                }
+        }
+        array.push(o);
+
+        var  o={
+                name : "getListFile",
+                help : "Возврощает весь список акивных файлов в группе",
+                color : "#ff7777",
+                //param : "files",
+                obj : {//то что посылаем через аякс на сервер, собственно тут сам запрос
+                        url : 'пофиг перезапишеться при отправке',
+                        type : 'GET'
+                }
+        }
+        array.push(o);
+
+}
+
+
+
+function posulaem () {
+        objectBase.obj.success=successMy
+        objectBase.obj.error=errorMy;	
+        
+        $.ajax(objectBase.obj)
+}
+
+
+function openObj (o, file){
+        for (var i = 0; i < aButton.length; i++) {
+                if(o.name==aButton[i].obj.name){
+                        aButton[i].alpha=0.5;
+                        history.pushState(null, null, serv); 
+                        // history.pushState(null, null, serv+"?index="+i); 
+                }else{
+                        aButton[i].alpha=1;
+                }		
+        }
+
+        objectBase = o;
+
+        ////собераем урл
+        o.obj.url=url+"/"+nameList;
+        if(o.id!=undefined)o.obj.url+="/"+id;
+        if(o.param!=undefined)o.obj.url+="/"+o.param;
+        if(o.idFile!=undefined)o.obj.url+="/"+idFile;
+        o.obj.url+="/"
+
+        ////
+
+        if(o.param){
+            var formD= new FormData(); 
+            formD.append('src', imageFile);
+            formD.append( nameList+"_obj",  id);
+
+            //formD.append( "nameList", nameList);
+            //formD.append( "id", id);
+
+            o.obj.data=formD
+            trace("sdfsdfsdfsdfsdfdsf")
+        }
+
+
+        labelHelp.text=objectBase.help
+
+        pObject.y=labelHelp.y+labelHelp.getRect().height+5
+        pObject.addObject(objectBase.obj);
+
+        dragObj()
+}
+
+
+
+function init1 () {
+        dcmParam=new DCM();
+        scane= new DCont(document.body);	
+        creatArrApi();
+        initInterfes();
+
+        openObj(array[0])		
+}
+var imageFile
+var formData
+function init () {
+        var bmp=new DBitmapData(100,100);
+        for (var j = 0; j < 100; j++) {
+                for (var i = 0; i < 100; i++) {
+                        bmp.setPixel(j,i,[Math.round(Math.random()*255),Math.round(Math.random()*255),Math.round(Math.random()*255),Math.round(Math.random()*255)])
+                }			
+        }
+        bmp.upDate()
+        var down = document.createElement('a');
+        down.href = bmp.canvas.toDataURL();
+        down.download = 'pic.png';
+        // down.click();
+        bmp.canvas.toBlob((blob) => {
+                imageFile = new File([blob],  Math.round(Math.random()*255)+".png" );
+                
+                formData= new FormData(); 
+                formData.append('file', imageFile);              
+
+                formData.append(
+                        "texture_obj",
+                        OBJECT_ID
+                    ); 
+
+
+                /*formData.append("name" "textures")
+                formData.append("id" "10") */       
+                init1();
+        }, 'image/png');
+
+}
+
+
+
+
+function successMy (e){//удачиный ответ
+        ta1.colorText1="#007700";
+        var s=JSON.stringify(e,null,4);
+        ta1.text=s;
+        console.log("success");
+}
+function errorMy (e){//не удачиный ответ		
+        ta1.colorText1="#ff0000";
+        var s=JSON.stringify(e,null,4);
+        ta1.text=s;
+        console.log("error");
+}
+
+
+
+
+
+
+
+function dragObj (){			
+        var s=JSON.stringify(objectBase.obj,null,4)		
+        ta.text=s
+}
+
+var serv=window.document.URL.toString()
+function initInterfes (){
+        var whB=200
+        var whB1=550
+        var whB2=350
+        wind=new DWindow(scane,0,0,"API")		
+        wind.width=whB+whB1+whB2+2*5
+        wind.height=500
+
+        new DLabel(wind,100,10,"id:")
+        var iii=new DInput(wind,120,2,id,function(){
+                id=this.value
+                localStorage.object.id=id
+                localStorage.save()
+                openObj(objectBase);
+        })
+        iii.width=50
+        iii.height=28
+
+
+        new DLabel(wind,200,10,"name:")
+        let ccc=new DComboBox(wind,250, 2, arrayList, function(){
+
+                nameList=arrayList[this.index]
+                openObj(objectBase);
+                localStorage.object.nameList=nameList
+                localStorage.save()
+        });
+        ccc.height=28;
+
+
+        new DLabel(wind,400,10,"idFile:")
+        var idFileInput=new DInput(
+                wind,
+                450,
+                2,
+                idFile,
+                function(){
+                        idFile=this.value			
+                        openObj(objectBase);
+                        localStorage.object.idFile=idFile
+                        localStorage.save()
+                })
+        idFileInput.width=50
+        idFileInput.height=28
+
+
+        new DLabel(wind,570,10,"url:")
+        let ccc1=new DComboBox(wind,600, 2, arrayURL, function(){
+
+                url=arrayURL[this.index]
+                openObj(objectBase);
+                localStorage.object.url=url
+                localStorage.save()
+        });
+        ccc1.height=28;
+        ccc1.width=300;
+
+        var localStorage=new LocalStorage(null,"sdxsdftgf")
+
+
+
+        if(localStorage.object.id==undefined){
+                localStorage.object.id=id;
+
+        }
+        if(localStorage.object.nameList==undefined)localStorage.object.nameList=nameList;
+        if(localStorage.object.url==undefined)localStorage.object.url=url;
+        if(localStorage.object.idFile==undefined)localStorage.object.idFile=idFile;
+
+
+
+        idFile=localStorage.object.idFile;
+        id=localStorage.object.id;
+        nameList=localStorage.object.nameList;
+        url=localStorage.object.url;
+
+
+        iii.value=id+""
+        idFileInput.value=idFile+""
+
+
+        nameList=localStorage.object.nameList;
+        for (var i = 0; i < arrayList.length; i++) {
+                if(arrayList[i]==nameList)ccc.index=i
+        }
+
+
+        url=localStorage.object.url;
+
+        for (var i = 0; i < arrayURL.length; i++) {
+                if(arrayURL[i]==url)ccc1.index=i
+        }
+
+        for (var i = 0; i < array.length; i++) {
+
+                aButton[i]=new DButton(wind.content, 2,2+34*i,array[i].name,function(s){
+                        if(s!=undefined){
+                                var data = new FormData();
+                                data.append('file', this.files[0]);
+                                this.obj.obj.data = data;
+                        }
+                        openObj(this.obj);
+                })
+                var l=new DLabel(wind.content, aButton[i].x+2,aButton[i].y+2+10,""+(1+i))
+                l.color='#eeeeee';
+                l.activMouse=false;
+
+
+                if(array[i].file!=undefined){
+                        aButton[i].startFile();
+                }
+                aButton[i].obj=array[i]
+                aButton[i].width=whB
+                if(array[i].color!=undefined){
+                        aButton[i].color=array[i].color
+                }
+
+        }
+
+        pObject=new DParamObject(wind.content,whB+4,2,function(){			
+                dragObj()
+        },1);
+        pObject.tipRide=true
+        pObject.arrType.push("object")
+        pObject.width=whB1
+        pObject.arrayLabel=["help"];
+
+        labelHelp=new DLabel(wind.content,whB+8,10,"Принимаем")
+        labelHelp.width=whB1-8;
+
+
+
+        let hh=(wind.height-20-4-32-36)/2
+        var b=new DButton(wind.content,pObject.x+pObject.width+2,2,"Посылаем",function(){
+                openObj(objectBase);
+                posulaem();
+        });
+        b.width=whB2
+
+        ta=new DTextArea(wind.content, pObject.x+pObject.width+2,36,"")
+        ta.textAlign = "left";
+        ta.width=whB2
+        ta.height=hh
+        ta.fontSize=12
+        ta.object.style.readonly="disabled";		
+
+
+        new DLabel(wind.content,pObject.x+pObject.width,36+hh,"Принимаем")
+        ta1=new DTextArea(wind.content,pObject.x+pObject.width,36+20+hh,"")
+        ta1.width=whB2
+        ta1.height=hh;
+        ta1.textAlign = "left";
+        ta1.fontSize=12
+
+        var index=getURLParameters("index");
+        if(index!=undefined){
+
+        }
+        var aa=window.document.URL.toString().split("?")
+        serv=aa[0]
+        console.log(index)
+}
+
+
+//customDepth+trasparent
+function getURLParameters(paramName, _sURL){
+        var sURL = window.document.URL.toString();
+        if(_sURL)sURL =_sURL
+        var arrParams = sURL.split("/");                        
+        if (sURL.indexOf("?") > 0) {
+                var arrParams = sURL.split("?");
+                var arrURLParams = arrParams[1].split("&");
+                var arrParamNames = new Array(arrURLParams.length);
+                var arrParamValues = new Array(arrURLParams.length);
+
+                arrParams = sURL.split("?");
+                arrURLParams = arrParams[1].split("&");
+                arrParamNames = new Array(arrURLParams.length);
+                arrParamValues = new Array(arrURLParams.length);
+
+
+                var i = 0;
+                for (i = 0; i < arrURLParams.length; i++) {
+
+                        var sParam =  arrURLParams[i].split("=");
+                        arrParamNames[i] = sParam[0];
+                        if (sParam[1] != "")
+                                arrParamValues[i] = unescape(sParam[1]);
+                        else
+                                arrParamValues[i] = null;
+                }
+
+                for (i=0; i<arrURLParams.length; i++) {
+                        if (arrParamNames[i] == paramName) {
+
+                                return arrParamValues[i];
+                        }
+                }
+                return null;
+        }
+}
+
+
+
+
+function LocalStorage(fun,_key) {
+        this.fun = fun;
+        var self = this;
+        this.object;
+        this.key = _key||'shirt';
+        this.object; // тут храняться все данные с localStorage
+        var b;
+        // инициализация localStorage
+        this.initLoad=function() {
+                b=true;
+                this.object = window.localStorage[this.key];
+                if(this.object == "undefined")b=false;
+                if(this.object == undefined)b=false;
+
+                // проверка пуст ли  localStorage
+                if(b == false) {
+                        this.object = this.getStartObj(); // если localStorage пуст, записываем обьект с функции getStartObj
+                }else {
+                        this.object = jQuery.parseJSON(this.object); // если localStorage не пуст записываем содержимое предварительно
+                }
+                trace(">>",b,this.object)			
+        }
+
+        // если localStorage пуст, записываем обьект
+        this.getStartObj = function() {
+                var obj = {
+                        activ:false,
+                        dubag:false,
+                        menu:{},
+                        xz:{}
+                };
+                return obj;
+        }
+
+        // сохраняем в localStorage данные
+        this.save = function() {
+                trace("save")		
+                window.localStorage[this.key] = JSON.stringify(self.object);
+        }
+
+        // сохраняем в localStorage данные
+        this.clear = function() {
+                window.localStorage[this.key] = undefined;
+        }
+        self.initLoad();
+        //setTimeout(function() {self.initLoad();}, 1);
+
+}
+
+
+
+
+
+
+</script>
+
+<style type="text/css">
+	#stats { position: absolute; top:0; left: 200px; }	
+</style>
+</head>
+<meta name="viewport" content="width=device-width,height=device-height,user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<body onload="init()">
+
+</body></html>
