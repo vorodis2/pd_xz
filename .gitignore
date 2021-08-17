@@ -1,1 +1,7 @@
 venv
+back_api/db.sqlite3
+back_api/static/
+.idea/
+*.sqlite3
+__pycache__/
+*.pyc
