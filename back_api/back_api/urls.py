@@ -21,7 +21,7 @@ from group2 import views as group2_views
 
 router = routers.DefaultRouter()
 router.register(r'group1', group1_views.Group1ViewSet)
-router.register(r'group2', group2_views.Group1ViewSet)
+router.register(r'group2', group2_views.Group2ViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
