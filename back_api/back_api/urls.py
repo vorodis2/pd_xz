@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from group1 import views
+from group1 import views as group1_views
+from group2 import views as group2_views
 
 router = routers.DefaultRouter()
-router.register(r'group1', views.Group1ViewSet)
+router.register(r'group1', group1_views.Group1ViewSet)
+router.register(r'group2', group2_views.Group2ViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

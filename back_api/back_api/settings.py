@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
 
     'group1',
+    'group2',
 ]
 
 REST_FRAMEWORK = {
