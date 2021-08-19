@@ -11,12 +11,12 @@ Class-based views
     2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls')) cdvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path, include
-from djoser.views import UserViewSet
 from rest_framework.authtoken.views import obtain_auth_token
+from django.conf.urls import url
 
 from api import settings
 from django.contrib.auth.views import LogoutView, LoginView  # , LoginView
@@ -25,23 +25,19 @@ FAVICON = 'favicon.ico'
 
 
 urlpatterns = [
-
-    path('auth/', include('djoser.urls.authtoken')),
-    path('auth/', include('djoser.urls.jwt')),
-    # path('auth/', include('accounts.urls')),
-    path('auth/', UserViewSet),
-
+    url('auth/', include('djoser.urls.authtoken')),
+    url('auth/', include('djoser.urls.jwt')),
+    url('auth/', include('djoser.urls')),
+    url('auth/', include('apps.users_api.urls')),
 
     path('admin/', admin.site.urls),
-    path('social_auth/', include('social_django.urls', namespace='social')),
 
-    path('social_auth/login/', LoginView.as_view(), {'next_page': settings.LOGIN_REDIRECT_URL}, name='logout'),
-    path('social_auth/logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
+    # path('social_auth/', include('social_django.urls', namespace='social')),
+    # path('social_auth/login/', LoginView.as_view(), {'next_page': settings.LOGIN_REDIRECT_URL}, name='logout'),
+    # path('social_auth/logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
 
-    
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    url('api/v1/group/', include('apps.group.urls')),
 
-
-
-    path('api/v1/group/', include('apps.group.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

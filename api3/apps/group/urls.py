@@ -1,7 +1,13 @@
 from django.urls import path
 
 
-from .views import GroupViewSet, GroupFileViewSet, GroupSortViewSet, GroupSmallViewSet,GroupCommentViewSet, get_last_change_time
+from .views import\
+    GroupViewSet,\
+    GroupFileViewSet,\
+    GroupSortViewSet,\
+    GroupSmallViewSet,\
+    GroupCommentViewSet,\
+    get_last_change_time
 
 
 APP_NAME = 'group'
@@ -43,7 +49,6 @@ urlpatterns = [
         'delete': 'destroy',
     }), name='files_detail'),
 
-
     path('sorts/', GroupSortViewSet.as_view({
         'get': 'list',
         'post': 'create',
@@ -55,18 +60,15 @@ urlpatterns = [
         'delete': 'destroy',
     }), name='sorts_detail'),
 
-
     path('littel/', GroupSmallViewSet.as_view({
         'get': 'list',
         'post': 'create',
     }), name=f'{APP_NAME}_littel'),
 
-
-
     path('comment/', GroupCommentViewSet.as_view({
         'get': 'list',
         'post': 'create',
-    }), name=f'{APP_NAME}_list'),  
+    }), name=f'{APP_NAME}_list'),
 
     path('comment/<int:pk>/', GroupCommentViewSet.as_view({
         'get': 'retrieve',

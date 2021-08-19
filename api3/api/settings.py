@@ -16,7 +16,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from loguru import logger
 from rest_framework.permissions import AllowAny
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,6 +25,8 @@ DOTENV_PATH = BASE_DIR / '.env'
 
 # Подгружаем .env
 load_dotenv(dotenv_path=DOTENV_PATH)
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     # 'materials',
     # 'scenes3d',
     'apps.group',
+    'apps.users_api',
     # 'group1',
     # 'group2',
     # 'group3',
