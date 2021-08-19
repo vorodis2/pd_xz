@@ -131,7 +131,48 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Default primary key field type
+# Default primary key field type   file:///Z:/home/pd_xz/api/
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# No-sniff header
+SECURE_CONTENT_TYPE_NOSNIFF = False
+SECURE_BROWSER_XSS_FILTER = True
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+
+
+CORS_ORIGIN_WHITELIST = (
+    "http://127.0.0.1",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8001",
+    "http://192.168.1.103",
+    "http://192.168.1.103:3000",
+    "http://192.168.1.103:8000",
+    'http://localhost',
+    'http://localhost:3000',
+    'http://alphakp.ru',
+    'https://alphakp.ru',
+    'http://localhost:8080',
+)
+
+CORS_ALLOW = (
+    "http://127.0.0.1",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8001",
+    "http://192.168.1.103",
+    "http://192.168.1.103:3000",
+    "http://192.168.1.103:8000",
+    'http://localhost',
+    'http://localhost:3000',    
+    'http://alphakp.ru',
+    'https://alphakp.ru',
+    'http://localhost:8080',
+)
